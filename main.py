@@ -11,8 +11,6 @@ async def on_ready():
   await client.change_presence(activity=discord.Game(name='Ryan Bot | !ryanhelp'))
   print('We have logged in as {0.user}'.format(client))
 
-
-
 def funcEpicJSON():
   #defines the var "photoJSON" makes it a global var
   global epicJSON
@@ -80,7 +78,7 @@ def dailyAstroURI():
   #calles the function to get the function
   funcPhotoJSON()
   #parces the JSON to get "hdurl"
-  photoURI = photoJSON["hdurl"]
+  photoURI = photoJSON["url"]
   #prints the output
   #print(photoURI)
   #return "photoURI as the result of the function"
@@ -127,7 +125,7 @@ def explanationFirst500():
   global limatedExplanation 
   # makes limatedExplanation equal to the function dailyAstroExplanation()
   limatedExplanation = dailyAstroExplanation()
-  limatedExplanation = limatedExplanation[0:950]
+  limatedExplanation = limatedExplanation[0:800]
   #print(limatedExplanation)
   return(f'{limatedExplanation} {limitPrompt}')
 
@@ -161,29 +159,36 @@ async def on_message(message):
     quote = get_quote()
     await message.channel.send(iss_number())
     print("iss_number_request")
+    
+  if message.content.startswith('!dailyphoto'):
+    embed=discord.Embed(title=dailyAstroTitle(), url=dailyAstroURI(), description=dailyAstroCopyright(), color=0xff2600)
+    embed.set_thumbnail(url=dailyAstroURI())
+    embed.add_field(name="Explanation", value=explanationFirst500(), inline=False)
+    await message.channel.send(embed=embed)
+    print("Daily Photo Called")
 
   if message.content.startswith('!ryanhelp'):
-    embed=discord.Embed(title="Ryan Bot", description="_Ryan Bot commands in this server start with `!`_", color=0x919191)
+    embed=discord.Embed(
+    title="Ryan Bot", description="_Ryan Bot commands in this server start with `!`_", color=0x919191)
     embed.set_thumbnail(url="https://cdn.glitch.com/8e643391-5d6c-45c3-bdf9-496a8701e0d1%2FScreen%20Shot%202021-02-19%20at%208.46.30%20PM.png?v=1613785603454")
     embed.add_field(name="!earthphoto", value="Gets The Latest Photo of Earth From The NOAA DSCOVR Spacecraft", inline=True)
     embed.add_field(name="!dailyphoto", value="Gets The Daily Photo of The Day Form NASA", inline=True)
     embed.add_field(name="!issnumber", value="Gets The Number of Astronauts Currently on The International Space Startion", inline=True)
     embed.add_field(name="!inspire", value="Gets An Inspiration Quote", inline=True)
     await message.channel.send(embed=embed)
-    
-  if message.content.startswith('!dailyphoto'):
-        embed=discord.Embed(title=dailyAstroTitle(), url=dailyAstroURI(), description=dailyAstroCopyright(), color=0xff2600)
-        embed.set_thumbnail(url=dailyAstroURI())
-        embed.add_field(name="Explanation", value=explanationFirst500(), inline=False)
-        await message.channel.send(embed=embed)
-        print("Daily Photo Called")
+
+  if message.content.startswith('!awesome'):
+    await message.channel.send('Awesome Is Awesome')
+    print("Awesome Called")
+
+  if message.content.startswith('!green'):
+    await message.channel.send('https://images-fibreglast-com.s3.amazonaws.com/pio-resized/750/Single%20Stage%20Lime%20Green%20Paint-66.jpg')
+    print("Green Called")
 
   if message.content.startswith('!earthphoto'):
     embed=discord.Embed(
-      title="The Latest Photo of The Earth", url="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/NASA_Worm_logo.svg/1024px-NASA_Worm_logo.svg.png", description="This image was taken by NASA's EPIC camera onboard the NOAA DSCOVR spacecraft...*Image Updates Every ~2 Hours*", color=0x669c35)
-    
+    title="The Latest Photo of The Earth", url="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/NASA_Worm_logo.svg/1024px-NASA_Worm_logo.svg.png", description="This image was taken by NASA's EPIC camera onboard the NOAA DSCOVR spacecraft...*Image Updates Every ~2 Hours*", color=0x669c35)
     embed.set_image(url=fetchEPICImage())
-    
     await message.channel.send(embed=embed)
 
 keep_alive()
