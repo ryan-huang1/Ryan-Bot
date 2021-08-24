@@ -122,7 +122,7 @@ def dailyAstroCopyright():
 def explanationFirst500():
   limitPrompt = "[_**...READ MORE**_](https://api.nasa.gov/planetary/apod?api_key=DEMO_KEY)"
   #defines "limatedExplanation" as a global variable
-  global limatedExplanation 
+  global limatedExplanation
   # makes limatedExplanation equal to the function dailyAstroExplanation()
   limatedExplanation = dailyAstroExplanation()
   limatedExplanation = limatedExplanation[0:800]
